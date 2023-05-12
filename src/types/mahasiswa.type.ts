@@ -18,11 +18,11 @@ export interface Imahasiswa {
 export interface ImahasiswaInput {
   nama: string,
   nim: string,
-  gender: EmahasiswaGender,
-  studi: string,
+  gender?: EmahasiswaGender,
+  studi?: string,
   password: string,
-  angkatan: string,
-  kelahiran: string,
-  provinsi: string,
+  angkatan?: string,
+  kelahiran?: string,
+  provinsi?: string,
 }
 

@@ -1,5 +1,5 @@
 export interface BaseResponseProps<T> {
-  code: string;
+  code: number;
   message: string;
   payload: T;
 }
@@ -10,7 +10,7 @@ export interface UploadResponseProps {
 }
 
 export interface BaseResponsePaginationProps<T> {
-  code: string;
+  code: number;
   message: string;
   payload: {
     count: number;

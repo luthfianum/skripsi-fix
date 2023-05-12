@@ -5,13 +5,17 @@ import {
   BaseResponsePaginationProps,
   BaseResponseProps,
 } from "../types/response.type";
-import { Imahasiswa, ImahasiswaInput } from "../types/mahasiswa.type";
+import { 
+  Imahasiswa, 
+  ImahasiswaInput 
+} from "../types/mahasiswa.type";
 import metaMaker from "../utils/pagination";
+import { HttpStatusCode } from "../types/httpStatusCode";
 
 export class MahasiswaController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static mahasiswaRepository: any = sequelize.getRepository(Mahasiswa);
-  
+
   constructor() {
     this.getList = this.getList.bind(this);
     this.create = this.create.bind(this);
@@ -32,7 +36,7 @@ export class MahasiswaController {
       });
 
       const response: BaseResponsePaginationProps<Imahasiswa> = {
-        code: "200",
+        code: HttpStatusCode.OK,
         message: "OK",
         payload: {
           count: mahasiswa.length,
@@ -42,7 +46,7 @@ export class MahasiswaController {
         },
       };
 
-      _res.status(200).json(response);
+      _res.status(HttpStatusCode.OK).json(response);
     } catch (error) {
       _next(error);
     }
@@ -59,11 +63,11 @@ export class MahasiswaController {
         id
       );
       const response: BaseResponseProps<Imahasiswa> = {
-        code: "200",
+        code: HttpStatusCode.OK,
         message: "OK",
         payload: mahasiswa,
       };
-      _res.status(200).json(response);
+      _res.status(HttpStatusCode.OK).json(response);
     } catch (error) {
       _next(error);
     }
@@ -80,11 +84,11 @@ export class MahasiswaController {
         data
       );
       const response: BaseResponseProps<Imahasiswa> = {
-        code: "200",
+        code: HttpStatusCode.OK,
         message: "OK",
         payload: mahasiswa,
       };
-      _res.status(200).json(response);
+      _res.status(HttpStatusCode.OK).json(response);
     } catch (error) {
       _next(error);
     }
@@ -103,11 +107,11 @@ export class MahasiswaController {
         { where: { id } }
       );
       const response: BaseResponseProps<Imahasiswa> = {
-        code: "200",
+        code: HttpStatusCode.OK,
         message: "OK",
         payload: mahasiswa,
       };
-      _res.status(200).json(response);
+      _res.status(HttpStatusCode.OK).json(response);
     } catch (error) {
       _next(error);
     }

@@ -10,7 +10,8 @@
     "lint": "eslint --ext .ts src/",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "migrate:up": "npx sequelize-cli db:migrate",
-    "migrate:undo": "npx sequelize-cli db:migrate:undo"
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "report": "plato -r -d report -x node_modules build"
   },
   "keywords": [],
   "author": "Luthfi Anum Pratama",
