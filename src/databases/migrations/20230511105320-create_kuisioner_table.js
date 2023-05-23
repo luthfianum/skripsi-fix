@@ -3,43 +3,36 @@
 
 module.exports = {
   up: function(queryInterface, DataTypes) {
-    return queryInterface.createTable('mahasiswa', {
+    return queryInterface.createTable('kuisioner', {
       id: {
         type: DataTypes.STRING,
         primaryKey: true,
         allowNull: false,
       },
-      nama: {
-        type: DataTypes.STRING,
-      },
-      nim: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      gender: {
-        type: DataTypes.STRING,
-      },
-      studi: {
-        type: DataTypes.STRING,
-      },
-      password: {
+      mahasiswaId: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      angkatan: {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      deskripsi: {
         type: DataTypes.STRING,
       },
-      kelahiran: {
+      metode: {
         type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'simple',
       },
-      provinsi: {
-        type: DataTypes.STRING,
+      responden: {
+        type: DataTypes.INTEGER,
+      },
+      expiredAt: {
+        type: DataTypes.DATE,
+      },
+      penyebaran: {
+        type: DataTypes.INTEGER,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -56,6 +49,6 @@ module.exports = {
   },
 
   down: function(queryInterface) {
-    return queryInterface.dropTable('mahasiswa');
+    return queryInterface.dropTable('kuisioner');
   },
 };

@@ -5,12 +5,10 @@ import {
   BaseResponsePaginationProps,
   BaseResponseProps,
 } from "../types/response.type";
-import { 
-  Imahasiswa, 
-  ImahasiswaInput 
-} from "../types/mahasiswa.type";
+import { IMahasiswa, IMahasiswaInput } from "../types/mahasiswa.type";
 import metaMaker from "../utils/pagination";
 import { HttpStatusCode } from "../types/httpStatusCode";
+import BaseError from "../errors/BaseError";
 
 export class MahasiswaController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,7 +33,7 @@ export class MahasiswaController {
         ...where,
       });
 
-      const response: BaseResponsePaginationProps<Imahasiswa> = {
+      const response: BaseResponsePaginationProps<IMahasiswa> = {
         code: HttpStatusCode.OK,
         message: "OK",
         payload: {
@@ -62,7 +60,9 @@ export class MahasiswaController {
       const mahasiswa = await MahasiswaController.mahasiswaRepository.findByPk(
         id
       );
-      const response: BaseResponseProps<Imahasiswa> = {
+      mahasiswa.check(_req);
+
+      const response: BaseResponseProps<IMahasiswa> = {
         code: HttpStatusCode.OK,
         message: "OK",
         payload: mahasiswa,
@@ -79,16 +79,16 @@ export class MahasiswaController {
     _next: NextFunction
   ): Promise<void> {
     try {
-      const data: ImahasiswaInput = _req.body;
+      const data: IMahasiswaInput = _req.body;
       const mahasiswa = await MahasiswaController.mahasiswaRepository.create(
         data
       );
-      const response: BaseResponseProps<Imahasiswa> = {
-        code: HttpStatusCode.OK,
+      const response: BaseResponseProps<IMahasiswa> = {
+        code: HttpStatusCode.CREATED,
         message: "OK",
         payload: mahasiswa,
       };
-      _res.status(HttpStatusCode.OK).json(response);
+      _res.status(HttpStatusCode.CREATED).json(response);
     } catch (error) {
       _next(error);
     }
@@ -101,15 +101,19 @@ export class MahasiswaController {
   ): Promise<void> {
     try {
       const { id } = _req.params;
-      const data: ImahasiswaInput = _req.body;
-      const mahasiswa = await MahasiswaController.mahasiswaRepository.update(
+      const data: IMahasiswaInput = _req.body;
+      const mahasiswa = await MahasiswaController.mahasiswaRepository.findByPk(id);
+      mahasiswa.check(_req, { isSelf: true, isFound: true });
+
+      const newMahasiswa = await MahasiswaController.mahasiswaRepository.update(
         data,
-        { where: { id } }
+        { where: { id }, returning: true },
       );
-      const response: BaseResponseProps<Imahasiswa> = {
+
+      const response: BaseResponseProps<IMahasiswa> = {
         code: HttpStatusCode.OK,
         message: "OK",
-        payload: mahasiswa,
+        payload: newMahasiswa[1][0],
       };
       _res.status(HttpStatusCode.OK).json(response);
     } catch (error) {

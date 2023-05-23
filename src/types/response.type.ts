@@ -4,6 +4,15 @@ export interface BaseResponseProps<T> {
   payload: T;
 }
 
+export interface ErrorResponseProps {
+  code: number;
+  message: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  details?: any;
+  timestamp: string;
+  url: string;
+}
+
 export interface UploadResponseProps {
   code: string;
   message: string;

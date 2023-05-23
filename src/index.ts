@@ -1,26 +1,23 @@
-import express, { Application } from "express";
-import morgan from "morgan";
 import sequelize from "./config/sequelize";
-import cors from "cors";
-import router from "./routes";
+
 import vars from "./config/vars";
+import app from "./config/app";
+import logger from "./config/logger";
+import MailService from "./config/nodemailer";
 
 const PORT = vars.port;
-
-const app: Application = express();
-app.use(express.json());
-app.use(morgan("tiny"));
-app.use(express.static("public"));
-app.use(cors());
-
-app.use("/api", router);
 
 app.listen(PORT, async () => {
   try {
     await sequelize.authenticate();
-    console.log("DB Connection:", "OK");
+    const mailService = MailService.getInstance();
+    await mailService.createConnection();
+    await mailService.verifyConnection();
+    logger.info("DB Connection: OK");
+    logger.info('SMTP Server Connected');
+    logger.info('SMTP Connection verified');
   } catch (error) {
-    console.log("DB Connection:", "FAILED");
+    logger.info("DB Connection: FAILED");
   }
-  console.log("Server is running on port:", PORT);
+  logger.info("Server is running on port: " + PORT);
 });

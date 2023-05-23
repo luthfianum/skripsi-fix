@@ -1,13 +1,13 @@
-export enum EmahasiswaGender {
+export enum EMahasiswaGender {
   L = "L",
   P = "P",
 } 
 
-export interface Imahasiswa {
+export interface IMahasiswa {
   id: string,
   nama: string,
   nim: string,
-  gender: EmahasiswaGender,
+  gender: EMahasiswaGender,
   studi: string,
   password: string,
   angkatan: string,
@@ -15,14 +15,13 @@ export interface Imahasiswa {
   provinsi: string,
 }
 
-export interface ImahasiswaInput {
+export interface IMahasiswaInput {
   nama: string,
   nim: string,
-  gender?: EmahasiswaGender,
+  gender?: EMahasiswaGender,
   studi?: string,
   password: string,
   angkatan?: string,
   kelahiran?: string,
   provinsi?: string,
 }
-

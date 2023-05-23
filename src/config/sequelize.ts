@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import vars from "./vars";
-import { Mahasiswa } from "../models/mahasiswa.model";
+import { Mahasiswa, Kuisioner } from "../models/index.model";
 
 const sequelize = new Sequelize({
   host: vars.db.host,
@@ -14,7 +14,7 @@ const sequelize = new Sequelize({
   define: {
     schema: vars.db.schema,
   },
-  models: [Mahasiswa],
+  models: [Mahasiswa, Kuisioner],
   modelMatch: (filename, member) => {
     return filename.substring(0, filename.indexOf('.model')) === member.toLowerCase();
   },
