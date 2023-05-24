@@ -4,7 +4,7 @@ import BaseError from "../errors/BaseError";
 import vars from "../config/vars";
 import { ErrorResponseProps } from "../types/response.type";
 
-const errorHandler = (_err: any, _req: Request, _res: Response) => {
+const errorHandler = (_err: any, _req: Request, _res: Response, _next: NextFunction) => {
   _err.statusCode = _err.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR;
   _err.message = _err.message || "Internal Server Error";
   if(vars.env === "development") {

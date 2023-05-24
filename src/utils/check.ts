@@ -2,6 +2,7 @@ import { ICheckOptions, DefaultOption, ICheck, JwtPayload } from "../types/base.
 import { HttpStatusCode } from "../types/httpStatusCode";
 import { Request } from "express";
 import BaseError from "../errors/BaseError";
+import { Model } from "sequelize-typescript";
 const check = (
   data: any,
   req: Request,
@@ -24,7 +25,7 @@ const isFound = (data: any, result: ICheck) => {
   }
 }
 
-const isSelf = (data: any, id: string, result: ICheck) => {
+const isSelf = (data: Model, id: string, result: ICheck) => {
   if (data.id == id) {
     result['isSelf'] = true
   } else {

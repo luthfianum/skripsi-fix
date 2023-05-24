@@ -14,10 +14,7 @@ export interface JwtPayload {
   exp: number;
 }
 
-export interface ICheckOptions {
-  isSelf?: boolean,
-  isFound?: boolean,
-}
+export type ICheckOptions = Partial<ICheck>
 
 export const DefaultOption: ICheckOptions = {
   isSelf: false,

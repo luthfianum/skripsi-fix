@@ -70,7 +70,11 @@ export class Kuisioner extends Model {
     instance.id = uuidv4();
   }
 
+  public getOwner(): string {
+    return this.mahasiswaId;
+  }
+
   public isSelf(id: string): boolean {
-    return this.mahasiswaId === id;
+    return this.getOwner() === id;
   }
 }
