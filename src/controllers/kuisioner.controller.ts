@@ -1,19 +1,21 @@
 import sequelize from "../config/sequelize";
 import { NextFunction, Request, Response } from "express";
 import { Kuisioner } from "../models/kuisioner.model";
-import { IKuisioner, IKuisionerInput } from "../types/kuisioner.type";
+import { IKuisioner, KuisionerInput } from "../types/kuisioner.type";
 import { HttpStatusCode } from "../types/httpStatusCode";
 import { BaseResponsePaginationProps, BaseResponseProps } from "../types/response.type";
 import metaMaker from "../utils/pagination";
+import check from "../utils/check";
 
 export class KuisionerController {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static kuisionerRepository: any = sequelize.getRepository(Kuisioner);
 
   constructor() {
     this.getList = this.getList.bind(this);
     this.create = this.create.bind(this);
     this.getById = this.getById.bind(this);
-  //   this.update = this.update.bind(this);
+    this.update = this.update.bind(this);
   }
 
   public async create (
@@ -83,7 +85,7 @@ export class KuisionerController {
     try {
       const { id } = _req.params;
       const kuisioner = await KuisionerController.kuisionerRepository.findByPk(id)
-      kuisioner.check(_req);
+      check(kuisioner,_req);
 
       const response: BaseResponseProps<IKuisioner> = {
         code: HttpStatusCode.OK,
@@ -105,9 +107,9 @@ export class KuisionerController {
   ){
     try {
       const { id } = _req.params;
-      const data: IKuisionerInput = _req.body;
+      const data: Partial<KuisionerInput> = _req.body;
       const kuisioner = await KuisionerController.kuisionerRepository.findByPk(id)
-      kuisioner.check(_req, { isSelf: true, isFound: true })
+      check(kuisioner, _req, { isSelf: true, isFound: true })
 
       const newKuisioner = await KuisionerController.kuisionerRepository.update(
         data,

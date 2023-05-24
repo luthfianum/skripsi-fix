@@ -2,14 +2,11 @@ import sequelize from "../config/sequelize";
 import { Mahasiswa } from "../models/mahasiswa.model";
 import { NextFunction, Request, Response } from "express";
 import {
-  // BaseResponsePaginationProps,
   BaseResponseProps,
 } from "../types/response.type";
 import BaseError from "../errors/BaseError";
 import { HttpStatusCode } from "../types/httpStatusCode";
-import SendmailTransport from "nodemailer/lib/sendmail-transport";
 import MailService from "../config/nodemailer";
-import { Transaction } from "sequelize";
 
 export class AuthController {
   private static mahasiswaRepository = sequelize.getRepository(Mahasiswa);

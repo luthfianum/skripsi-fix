@@ -7,12 +7,12 @@ export interface IMahasiswa {
   id: string,
   nama: string,
   nim: string,
-  gender: EMahasiswaGender,
-  studi: string,
+  gender?: EMahasiswaGender,
+  studi?: string,
   password: string,
-  angkatan: string,
-  kelahiran: string,
-  provinsi: string,
+  angkatan?: string,
+  kelahiran?: string,
+  provinsi?: string,
 }
 
 export interface IMahasiswaInput {

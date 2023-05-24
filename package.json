@@ -11,7 +11,7 @@
     "lint-and-fix": "eslint . --ext .ts --fix",
     "migrate:up": "npx sequelize-cli db:migrate",
     "migrate:undo": "npx sequelize-cli db:migrate:undo",
-    "report": "plato -r -d report -x node_modules build"
+    "report": "plato -r -d report -x node_modules build -t 'Skripsi SurveyUp' -l .eslintrc.json"
   },
   "keywords": [],
   "author": "Luthfi Anum Pratama",
@@ -51,6 +51,7 @@
     "sequelize": "^6.31.0",
     "sequelize-typescript": "^2.1.5",
     "swagger-ui-express": "^4.6.2",
+    "ts-complex": "^1.0.0",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"
   }

@@ -5,7 +5,6 @@ import {
   CreatedAt,
   DataType,
   DeletedAt,
-  HasMany,
   IsIn,
   Length,
   Model,
@@ -20,9 +19,6 @@ import vars from "../config/vars";
 import { verifyEmail } from "@devmehq/email-validator-js";
 import BaseError from "../errors/BaseError";
 import { HttpStatusCode } from "../types/httpStatusCode";
-import { Request } from "express";
-import { DefaultOption, ICheck, ICheckOptions, jwtPayload } from "../types/base.type";
-import { Kuisioner } from "./kuisioner.model";
 
 const saltRounds = 10;
 
@@ -113,10 +109,6 @@ export class Mahasiswa extends Model {
     return bcrypt.compare(password, this.password);
   }
 
-  public isSelf(id: string): boolean {
-    return this.id === id;
-  }
-
   public createToken(): string {
     return jwt.sign(
       {
@@ -128,30 +120,5 @@ export class Mahasiswa extends Model {
         expiresIn: "7 days",
       }
     );
-  }
-
-  public check(
-    req: Request,
-    option: ICheckOptions = DefaultOption
-  ): ICheck | void {
-    console.log(option)
-    const result: ICheck = {};
-    if (option?.isFound) {
-      if(this){
-        result['isFound'] = true
-      } else {
-        throw new BaseError(HttpStatusCode.NOT_FOUND, "Mahasiswa Not Found");
-      }
-    }
-    if (option?.isSelf) {
-      const { id } = req.user as jwtPayload;
-      if(this.isSelf(id)){
-        result['isSelf'] = true
-      } else {
-        throw new BaseError(HttpStatusCode.FORBIDDEN, "Forbidden");
-      }
-    }
-    console.log(result)
-    return result; 
   }
 }

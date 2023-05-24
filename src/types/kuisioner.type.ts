@@ -1,24 +1,12 @@
-export enum EMetodeKuisioner{
-  simple= "simple",
-  systematic= "systematic",
-  cluster= "cluster"
+export enum EMetodeKuisioner {
+  simple = "simple",
+  systematic = "systematic",
+  cluster = "cluster",
 }
 
 export interface IKuisioner {
-  id : string;
+  id: string;
   idMahasiswa: string;
-  title: string;
-  deskripsi: string;
-  metode: EMetodeKuisioner;
-  responden: number;
-  expiredAt: Date;
-  penyebaran: number;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date;
-}
-
-export interface IKuisionerInput {
   title: string;
   deskripsi: string;
   metode: EMetodeKuisioner;
@@ -30,12 +18,17 @@ export interface IKuisionerInput {
   deletedAt?: Date;
 }
 
-export const initialKuisionerInput : IKuisionerInput= {
-  title: '',
-  deskripsi: '',
+export type KuisionerInput = Pick<
+  IKuisioner,
+  "title" | "deskripsi" | "metode" | "responden" | "expiredAt" | "penyebaran" | "deletedAt"
+>;
+
+export const initialKuisionerInput: KuisionerInput = {
+  title: "",
+  deskripsi: "",
   metode: EMetodeKuisioner.simple,
   responden: 0,
   penyebaran: 0,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-}
+  expiredAt: undefined,
+  deletedAt: undefined
+};

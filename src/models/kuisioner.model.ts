@@ -12,10 +12,6 @@ import {
 import { Mahasiswa } from "./mahasiswa.model";
 import { v4 as uuidv4 } from "uuid";
 import { EMetodeKuisioner } from "../types/kuisioner.type";
-import { DefaultOption, ICheck, ICheckOptions, jwtPayload } from "../types/base.type";
-import BaseError from "../errors/BaseError";
-import { Request } from "express";
-import { HttpStatusCode } from "../types/httpStatusCode";
 
 @Table({
   tableName: "kuisioner",
@@ -76,30 +72,5 @@ export class Kuisioner extends Model {
 
   public isSelf(id: string): boolean {
     return this.mahasiswaId === id;
-  }
-
-  public check(
-    req: Request,
-    option: ICheckOptions = DefaultOption
-  ): ICheck | void {
-    console.log(option)
-    const result: ICheck = {};
-    if (option?.isFound) {
-      if(this){
-        result['isFound'] = true
-      } else {
-        throw new BaseError(HttpStatusCode.NOT_FOUND, "Kuisioner Not Found");
-      }
-    }
-    if (option?.isSelf) {
-      const { id } = req.user as jwtPayload;
-      if(this.isSelf(id)){
-        result['isSelf'] = true
-      } else {
-        throw new BaseError(HttpStatusCode.FORBIDDEN, "Forbidden");
-      }
-    }
-    console.log(result)
-    return result; 
   }
 }

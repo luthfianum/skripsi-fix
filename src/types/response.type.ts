@@ -13,11 +13,6 @@ export interface ErrorResponseProps {
   url: string;
 }
 
-export interface UploadResponseProps {
-  code: string;
-  message: string;
-}
-
 export interface BaseResponsePaginationProps<T> {
   code: number;
   message: string;

@@ -8,18 +8,11 @@ import {
 import { IMahasiswa, IMahasiswaInput } from "../types/mahasiswa.type";
 import metaMaker from "../utils/pagination";
 import { HttpStatusCode } from "../types/httpStatusCode";
-import BaseError from "../errors/BaseError";
+import check from "../utils/check";
 
 export class MahasiswaController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static mahasiswaRepository: any = sequelize.getRepository(Mahasiswa);
-
-  constructor() {
-    this.getList = this.getList.bind(this);
-    this.create = this.create.bind(this);
-    this.getById = this.getById.bind(this);
-    this.update = this.update.bind(this);
-  }
 
   public async getList(
     _req: Request,
@@ -60,7 +53,7 @@ export class MahasiswaController {
       const mahasiswa = await MahasiswaController.mahasiswaRepository.findByPk(
         id
       );
-      mahasiswa.check(_req);
+      check(mahasiswa, _req);
 
       const response: BaseResponseProps<IMahasiswa> = {
         code: HttpStatusCode.OK,
@@ -102,12 +95,14 @@ export class MahasiswaController {
     try {
       const { id } = _req.params;
       const data: IMahasiswaInput = _req.body;
-      const mahasiswa = await MahasiswaController.mahasiswaRepository.findByPk(id);
-      mahasiswa.check(_req, { isSelf: true, isFound: true });
+      const mahasiswa = await MahasiswaController.mahasiswaRepository.findByPk(
+        id
+      );
+      check(mahasiswa, _req, { isSelf: true, isFound: true });
 
       const newMahasiswa = await MahasiswaController.mahasiswaRepository.update(
         data,
-        { where: { id }, returning: true },
+        { where: { id }, returning: true }
       );
 
       const response: BaseResponseProps<IMahasiswa> = {

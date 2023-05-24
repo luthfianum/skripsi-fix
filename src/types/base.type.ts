@@ -6,7 +6,7 @@ export interface DefaultQuery {
   endAt?: string;
 }
 
-export interface jwtPayload {
+export interface JwtPayload {
   nim: string;
   id: string;
   role?: string;

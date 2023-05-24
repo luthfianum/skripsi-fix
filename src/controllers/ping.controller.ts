@@ -1,5 +1,3 @@
-
-
 interface PingResponse {
   uptime: number;
   message: string;

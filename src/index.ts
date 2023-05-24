@@ -15,9 +15,12 @@ app.listen(PORT, async () => {
     await mailService.verifyConnection();
     logger.info("DB Connection: OK");
     logger.info('SMTP Server Connected');
-    logger.info('SMTP Connection verified');
+    logger.info('SMTP Connection Verified');
   } catch (error) {
     logger.info("DB Connection: FAILED");
+    logger.info('SMTP Server Not Connected');
+    logger.info('SMTP Connection Not Verified');
+    return 0
   }
   logger.info("Server is running on port: " + PORT);
 });

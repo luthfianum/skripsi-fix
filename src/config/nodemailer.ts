@@ -17,19 +17,6 @@ export default class MailService {
         }
         return MailService.instance;
     }
-    //CREATE CONNECTION FOR LOCAL
-    async createLocalConnection() {
-        const account = await nodemailer.createTestAccount();
-        this.transporter = nodemailer.createTransport({
-            host: account.smtp.host,
-            port: account.smtp.port,
-            secure: account.smtp.secure,
-            auth: {
-                user: account.user,
-                pass: account.pass,
-            },
-        });
-    }
     //CREATE A CONNECTION FOR LIVE
     async createConnection() {
         this.transporter = nodemailer.createTransport({
