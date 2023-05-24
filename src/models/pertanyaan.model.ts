@@ -11,7 +11,6 @@ import {
 } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid";
 import { Kuisioner } from "./kuisioner.model";
-import { ICheck } from "../types/base.type";
 
 @Table({
   tableName: "pertanyaan",

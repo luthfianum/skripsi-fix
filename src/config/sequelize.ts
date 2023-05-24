@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import vars from "./vars";
 import { Mahasiswa, Kuisioner, Pertanyaan } from "../models/index.model";
-// import { Pertanyaan } from "../models/pertanyaan.model";
 
 const sequelize = new Sequelize({
   host: vars.db.host,
