@@ -61,7 +61,7 @@ export class AuthController {
       const data = _req.body;
       const mahasiswa = await AuthController.mahasiswaRepository.create(data, { transaction });
 
-      MailService.getInstance().sendWelcomeEmail(mahasiswa.email)
+      await MailService.getInstance().sendWelcomeEmail(mahasiswa.email)
       transaction.commit();
       const response: BaseResponseProps<Mahasiswa> = {
         code: HttpStatusCode.CREATED,
