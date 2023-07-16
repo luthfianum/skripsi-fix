@@ -2,7 +2,7 @@ import cors from "cors";
 import express, { Application } from "express";
 import morgan from "morgan";
 import { errorHandler } from "../middlewares/errorHandler";
-import router from "../routes";
+import {router} from "../routes";
 import formData from "express-form-data";
 
 const app: Application = express();

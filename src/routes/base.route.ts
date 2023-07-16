@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from "./index";
 import PingController from "../controllers/ping.controller";
 const baseRouter = Router();
 

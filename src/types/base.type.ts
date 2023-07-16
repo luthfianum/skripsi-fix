@@ -6,6 +6,13 @@ export interface DefaultQuery {
   endAt?: string;
 }
 
+export type meta = {
+  next: string;
+  prev: string;
+}
+
+
+
 export interface JwtPayload {
   nim: string;
   id: string;

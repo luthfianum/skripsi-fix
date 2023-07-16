@@ -15,4 +15,4 @@ router.use('/kuisioner', isAuthenticated, kuisionerRoute)
 
 router.use(notFoundErrorHandler);
 
-export default router;
+export { router, Router };

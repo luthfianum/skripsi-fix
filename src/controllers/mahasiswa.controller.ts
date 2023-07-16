@@ -22,9 +22,10 @@ export class MahasiswaController {
     try {
       const { where, meta } = metaMaker(_req);
 
-      const mahasiswa = await MahasiswaController.mahasiswaRepository.findAll({
-        ...where,
-      });
+      const mahasiswa: IMahasiswa[] =
+        await MahasiswaController.mahasiswaRepository.findAll({
+          ...where,
+        });
 
       const response: BaseResponsePaginationProps<IMahasiswa> = {
         code: HttpStatusCode.OK,
