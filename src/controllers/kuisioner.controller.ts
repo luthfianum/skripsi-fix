@@ -2,12 +2,12 @@ import sequelize from "../config/sequelize";
 import { NextFunction, Request, Response } from "express";
 import { Kuisioner } from "../models/kuisioner.model";
 import { IKuisioner, KuisionerInput } from "../types/kuisioner.type";
-import { HttpStatusCode } from "../types/httpStatusCode";
+
 import { BaseResponsePaginationProps, BaseResponseProps } from "../types/response.type";
 import metaMaker from "../utils/pagination";
 import check from "../utils/check";
 
-export class KuisionerController {
+class KuisionerController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static kuisionerRepository: any = sequelize.getRepository(Kuisioner);
 
@@ -34,11 +34,11 @@ export class KuisionerController {
       )
       console.log(kuisioner)
       const response: BaseResponseProps<IKuisioner> = {
-        code: HttpStatusCode.CREATED,
+        code: 201,
         message: "OK",
         payload: kuisioner,
       };
-      _res.status(HttpStatusCode.CREATED).json(response);
+      _res.status(201).json(response);
     } catch (error) {
       _next(error)
     }
@@ -60,7 +60,7 @@ export class KuisionerController {
       })
 
       const response: BaseResponsePaginationProps<IKuisioner> = {
-        code: HttpStatusCode.OK,
+        code: 200,
         message: "OK",
         payload: {
           count: kuisioner.length,
@@ -70,7 +70,7 @@ export class KuisionerController {
         },
       };
 
-      _res.status(HttpStatusCode.OK).json(response);
+      _res.status(200).json(response);
 
     } catch (error) {
       _next(error)
@@ -83,17 +83,18 @@ export class KuisionerController {
     _next: NextFunction
   ){
     try {
+      console.log(_req.params)
       const { id } = _req.params;
       const kuisioner = await KuisionerController.kuisionerRepository.findByPk(id)
       check(kuisioner,_req);
 
       const response: BaseResponseProps<IKuisioner> = {
-        code: HttpStatusCode.OK,
+        code: 200,
         message: "OK",
         payload: kuisioner,
       };
 
-      _res.status(HttpStatusCode.OK).json(response);
+      _res.status(200).json(response);
 
     } catch (error) {
       _next(error)
@@ -117,12 +118,12 @@ export class KuisionerController {
       );
 
       const response: BaseResponseProps<IKuisioner> = {
-        code: HttpStatusCode.OK,
+        code: 200,
         message: "OK",
         payload: newKuisioner[1][0],
       };
 
-      _res.status(HttpStatusCode.OK).json(response);
+      _res.status(200).json(response);
 
     } catch (error) {
       _next(error)
@@ -130,4 +131,5 @@ export class KuisionerController {
   }
 }
 
-export const kuisionerController = new KuisionerController();
+const kuisionerController = new KuisionerController();
+export default kuisionerController;

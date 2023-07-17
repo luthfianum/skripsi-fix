@@ -1,11 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpStatusCode } from "../types/httpStatusCode";
-import BaseError from "../errors/BaseError";
-import vars from "../config/vars";
 import { ErrorResponseProps } from "../types/response.type";
+import vars from "../config/vars";
 
 const errorHandler = (_err: any, _req: Request, _res: Response, _next: NextFunction) => {
-  _err.statusCode = _err.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR;
+  _err.statusCode = _err.statusCode || 500;
   _err.message = _err.message || "Internal Server Error";
   if(vars.env === "development") {
     _res.status(_err.statusCode).json({
@@ -26,9 +24,4 @@ const errorHandler = (_err: any, _req: Request, _res: Response, _next: NextFunct
   }
 }
 
-const notFoundErrorHandler = (_req: Request, _res: Response, _next: NextFunction) => {
-  const error = new BaseError(HttpStatusCode.NOT_FOUND, "URL Not Found", true);
-  _next(error);
-};
-
-export { errorHandler, notFoundErrorHandler };
+export default errorHandler;

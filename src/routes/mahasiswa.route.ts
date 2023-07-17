@@ -1,5 +1,5 @@
 import { Router } from "./index";
-import { mahasiswaController } from "../controllers/mahasiswa.controller";
+import mahasiswaController from "../controllers/mahasiswa.controller";
 const mahasiswaRouter = Router();
 
 mahasiswaRouter.get("/", mahasiswaController.getList);

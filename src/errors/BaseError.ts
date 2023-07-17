@@ -1,11 +1,11 @@
-import { HttpStatusCode } from "../types/httpStatusCode";
+
 
 class BaseError extends Error {
-  statusCode: HttpStatusCode;
+  statusCode: number;
   isOperational: boolean;
   details: any;
 
-  constructor(statusCode: HttpStatusCode, message: string, isOperational?: boolean, details?: any) {
+  constructor(statusCode: number, message: string, isOperational?: boolean, details?: any) {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = isOperational ?? false;

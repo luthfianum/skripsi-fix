@@ -11,14 +11,15 @@ import {
 } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid";
 import { Kuisioner } from "./kuisioner.model";
+import { Mahasiswa } from "./mahasiswa.model";
 
 @Table({
-  tableName: "pertanyaan",
+  tableName: "penyebaran",
   timestamps: true,
   freezeTableName: true,
-  modelName: "Pertanyaan",
+  modelName: "penyebaran",
 })
-export class Pertanyaan extends Model {
+export class Penyebaran extends Model {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
@@ -30,16 +31,8 @@ export class Pertanyaan extends Model {
   kuisionerId!: string;
 
   @Column(DataType.STRING)
-  pertanyaan!: string;
-
-  @Column(DataType.STRING)
-  tipe!: string;
-
-  @Column(DataType.STRING)
-  section!: string;
-
-  @Column(DataType.BOOLEAN)
-  master!: boolean;
+  @ForeignKey(() => Mahasiswa)
+  mahasiswaId!: string;
 
   @CreatedAt
   @Column
@@ -54,7 +47,7 @@ export class Pertanyaan extends Model {
   deletedAt!: Date;
 
   @BeforeCreate
-  static async generateId(instance: Pertanyaan): Promise<void> {
+  static async generateId(instance: Penyebaran): Promise<void> {
     instance.id = uuidv4().replace(/-/g, '');
   }
 }

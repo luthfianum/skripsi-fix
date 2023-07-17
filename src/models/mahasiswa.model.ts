@@ -18,7 +18,6 @@ import { v4 as uuidv4 } from "uuid";
 import vars from "../config/vars";
 import { verifyEmail } from "@devmehq/email-validator-js";
 import BaseError from "../errors/BaseError";
-import { HttpStatusCode } from "../types/httpStatusCode";
 
 const saltRounds = 10;
 
@@ -83,7 +82,7 @@ export class Mahasiswa extends Model {
 
   @BeforeCreate
   static async generateId(instance: Mahasiswa): Promise<void> {
-    instance.id = uuidv4();
+    instance.id = uuidv4().replace(/-/g, '');
   }
 
   @BeforeCreate
@@ -101,7 +100,7 @@ export class Mahasiswa extends Model {
     });
     console.log(validFormat, validMx);
     if (!(validFormat && validMx)) {
-      throw new BaseError(HttpStatusCode.NOT_FOUND, "Alamat email tidak benar");
+      throw new BaseError(404, "Alamat email tidak benar");
     }
   }
 

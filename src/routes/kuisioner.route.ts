@@ -1,5 +1,5 @@
 import { Router } from "./index";
-import { kuisionerController } from "../controllers/kuisioner.controller";
+import kuisionerController from "../controllers/kuisioner.controller";
 import pertanyaanRoute from "./pertanyaan.route";
 const kuisionerRoute = Router();
 

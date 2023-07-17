@@ -1,24 +1,24 @@
 import {
+  Column,
+  DataType,
+  Table,
+  ForeignKey,
   Model,
   BeforeCreate,
-  Column,
   CreatedAt,
-  DataType,
   DeletedAt,
-  Table,
   UpdatedAt,
-  ForeignKey,
 } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid";
-import { Kuisioner } from "./kuisioner.model";
+import { Pertanyaan } from "./pertanyaan.model";
 
 @Table({
-  tableName: "pertanyaan",
+  tableName: "option",
   timestamps: true,
   freezeTableName: true,
-  modelName: "Pertanyaan",
+  modelName: "option",
 })
-export class Pertanyaan extends Model {
+export class Option extends Model {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
@@ -26,20 +26,11 @@ export class Pertanyaan extends Model {
   id!: string;
 
   @Column(DataType.STRING)
-  @ForeignKey(() => Kuisioner)
-  kuisionerId!: string;
+  @ForeignKey(() => Pertanyaan)
+  pertanyaanId!: string;
 
   @Column(DataType.STRING)
-  pertanyaan!: string;
-
-  @Column(DataType.STRING)
-  tipe!: string;
-
-  @Column(DataType.STRING)
-  section!: string;
-
-  @Column(DataType.BOOLEAN)
-  master!: boolean;
+  option!: string;
 
   @CreatedAt
   @Column
@@ -54,7 +45,7 @@ export class Pertanyaan extends Model {
   deletedAt!: Date;
 
   @BeforeCreate
-  static async generateId(instance: Pertanyaan): Promise<void> {
+  static async generateId(instance: Option): Promise<void> {
     instance.id = uuidv4().replace(/-/g, '');
   }
 }

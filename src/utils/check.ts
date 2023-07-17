@@ -1,5 +1,5 @@
 import { ICheckOptions, DefaultOption, ICheck, JwtPayload } from "../types/base.type";
-import { HttpStatusCode } from "../types/httpStatusCode";
+
 import { Request } from "express";
 import BaseError from "../errors/BaseError";
 import { Model } from "sequelize-typescript";
@@ -21,7 +21,7 @@ const isFound = (data: any, result: ICheck) => {
   if (data) {
     result['isFound'] = true
   } else {
-    throw new BaseError(HttpStatusCode.NOT_FOUND, "Data Not Found");
+    throw new BaseError(404, "Data Not Found");
   }
 }
 
@@ -29,7 +29,7 @@ const isSelf = (data: Model, id: string, result: ICheck) => {
   if (data.id == id) {
     result['isSelf'] = true
   } else {
-    throw new BaseError(HttpStatusCode.FORBIDDEN, "Forbidden");
+    throw new BaseError(403, "Forbidden");
   }
 }
 

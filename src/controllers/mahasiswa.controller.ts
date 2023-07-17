@@ -7,7 +7,7 @@ import {
 } from "../types/response.type";
 import { IMahasiswa, IMahasiswaInput } from "../types/mahasiswa.type";
 import metaMaker from "../utils/pagination";
-import { HttpStatusCode } from "../types/httpStatusCode";
+
 import check from "../utils/check";
 
 export class MahasiswaController {
@@ -28,7 +28,7 @@ export class MahasiswaController {
         });
 
       const response: BaseResponsePaginationProps<IMahasiswa> = {
-        code: HttpStatusCode.OK,
+        code: 200,
         message: "OK",
         payload: {
           count: mahasiswa.length,
@@ -38,7 +38,7 @@ export class MahasiswaController {
         },
       };
 
-      _res.status(HttpStatusCode.OK).json(response);
+      _res.status(200).json(response);
     } catch (error) {
       _next(error);
     }
@@ -57,11 +57,11 @@ export class MahasiswaController {
       check(mahasiswa, _req);
 
       const response: BaseResponseProps<IMahasiswa> = {
-        code: HttpStatusCode.OK,
+        code: 200,
         message: "OK",
         payload: mahasiswa,
       };
-      _res.status(HttpStatusCode.OK).json(response);
+      _res.status(200).json(response);
     } catch (error) {
       _next(error);
     }
@@ -78,11 +78,11 @@ export class MahasiswaController {
         data
       );
       const response: BaseResponseProps<IMahasiswa> = {
-        code: HttpStatusCode.CREATED,
+        code: 201,
         message: "OK",
         payload: mahasiswa,
       };
-      _res.status(HttpStatusCode.CREATED).json(response);
+      _res.status(201).json(response);
     } catch (error) {
       _next(error);
     }
@@ -107,15 +107,16 @@ export class MahasiswaController {
       );
 
       const response: BaseResponseProps<IMahasiswa> = {
-        code: HttpStatusCode.OK,
+        code: 200,
         message: "OK",
         payload: newMahasiswa[1][0],
       };
-      _res.status(HttpStatusCode.OK).json(response);
+      _res.status(200).json(response);
     } catch (error) {
       _next(error);
     }
   }
 }
 
-export const mahasiswaController = new MahasiswaController();
+const mahasiswaController = new MahasiswaController();
+export default mahasiswaController;

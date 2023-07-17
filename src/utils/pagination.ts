@@ -1,41 +1,8 @@
 import { Request } from "express";
 import vars from "../config/vars";
-import { Op } from "sequelize";
 import { DefaultQuery } from "../types/base.type";
-
-const createWhereClause = (startAt?: string, endAt?: string) => {
-  let where = {};
-
-  if (startAt && endAt) {
-    where = {
-      ...where,
-      createdAt: {
-        [Op.between]: [startAt, endAt],
-      },
-    };
-  }
-
-  return where;
-};
-
-const createPaginationLinks = (url: string, limit?: number, offset?: number) => {
-  const meta = {
-    prev: "",
-    next: "",
-  };
-
-  if (limit) {
-    if (offset) {
-      meta.next = `${url}?limit=${limit}&offset=${(+offset) + (+limit)}`;
-      meta.prev = `${url}?limit=${limit}&offset=${offset - limit}`;
-    } else {
-      meta.next = `${url}?limit=${limit}&offset=${limit}`;
-      meta.prev = `${url}?limit=${limit}&offset=0`;
-    }
-  }
-
-  return meta;
-};
+import createPaginationLinks from "./paginationLink";
+import createWhereClause from "./whereClause";
 
 const metaMaker = (requestData: Request) => {
   const url = `${requestData.hostname}:${vars.port}${requestData.baseUrl}`;

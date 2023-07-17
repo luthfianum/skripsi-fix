@@ -67,7 +67,7 @@ export class Kuisioner extends Model {
 
   @BeforeCreate
   static async generateId(instance: Kuisioner): Promise<void> {
-    instance.id = uuidv4();
+    instance.id = uuidv4().replace(/-/g, '');
   }
 
   public getOwner(): string {

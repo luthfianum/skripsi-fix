@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpStatusCode } from "../types/httpStatusCode";
+
 import { BaseResponsePaginationProps, BaseResponseProps } from "../types/response.type";
 import sequelize from "../config/sequelize";
 import { Pertanyaan } from "../models/pertanyaan.model";
 import metaMaker from "../utils/pagination";
 import { IPertanyaan, InputPertanyaan } from "../types/pertanyaan.type";
+import { Option } from "../models/option.model";
 
-export class PertanyaanController {
+class PertanyaanController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static pertanyaanRepository: any = sequelize.getRepository(Pertanyaan);
 
@@ -19,6 +20,11 @@ export class PertanyaanController {
       const { kuisionerId } = _req.params;
       const { where, meta } = metaMaker(_req);
       const pertanyaan = await PertanyaanController.pertanyaanRepository.findAll({
+        includes: [
+          {
+            model: Option,
+          }
+        ],
         where: {
           kuisionerId,
           ...where
@@ -26,7 +32,7 @@ export class PertanyaanController {
       })
 
       const response: BaseResponsePaginationProps<IPertanyaan> = {
-        code: HttpStatusCode.OK,
+        code: 200,
         message: "OK",
         payload: {
           count: pertanyaan.length,
@@ -36,7 +42,7 @@ export class PertanyaanController {
         },
       };
 
-      _res.status(HttpStatusCode.OK).json(response);
+      _res.status(200).json(response);
     } catch (error) {
       _next(error)
     }
@@ -58,11 +64,11 @@ export class PertanyaanController {
       )
 
       const response: BaseResponseProps<IPertanyaan> = {
-        code: HttpStatusCode.CREATED,
+        code: 201,
         message: "CREATED",
         payload: pertanyaan,
       };
-      _res.status(HttpStatusCode.CREATED).json(response);
+      _res.status(201).json(response);
     } catch (error) {
       _next(error)
     }
@@ -78,12 +84,12 @@ export class PertanyaanController {
       const pertanyaan = await PertanyaanController.pertanyaanRepository.findByPk(id);
 
       const response: BaseResponseProps<IPertanyaan> = {
-        code: HttpStatusCode.CREATED,
+        code: 201,
         message: "CREATED",
         payload: pertanyaan,
       };
 
-      _res.status(HttpStatusCode.OK).json(response)
+      _res.status(200).json(response)
     } catch (error) {
       _next(error)
     }
@@ -102,12 +108,12 @@ export class PertanyaanController {
       const updatedPertanyaan = await pertanyaan.update(data)
 
       const response: BaseResponseProps<IPertanyaan> = {
-        code: HttpStatusCode.CREATED,
+        code: 201,
         message: "CREATED",
         payload: updatedPertanyaan,
       };
 
-      _res.status(HttpStatusCode.OK).json(response)
+      _res.status(200).json(response)
     } catch (error) {
       _next(error)
     }
@@ -125,16 +131,17 @@ export class PertanyaanController {
       await pertanyaan.softDestroy()
 
       const response: BaseResponseProps<IPertanyaan> = {
-        code: HttpStatusCode.CREATED,
+        code: 201,
         message: "CREATED",
         payload: pertanyaan,
       };
 
-      _res.status(HttpStatusCode.OK).json(response)
+      _res.status(200).json(response)
     } catch (error) {
       _next(error)
     }
   }
 }
 
-export const pertanyaanController = new PertanyaanController();
+const pertanyaanController = new PertanyaanController();
+export default pertanyaanController;
