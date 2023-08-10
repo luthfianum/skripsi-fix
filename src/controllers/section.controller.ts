@@ -1,17 +1,17 @@
 import sequelize from "../config/sequelize";
 import { NextFunction, Request, Response } from "express";
-import { Kuisioner } from "../models/kuisioner.model";
 import { IKuisioner, KuisionerInput } from "../types/kuisioner.type";
 
 import { BaseResponsePaginationProps, BaseResponseProps } from "../types/response.type";
 import metaMaker from "../utils/pagination";
 import check from "../utils/check";
 import BaseError from "../errors/BaseError";
-import { Option } from "../models/option.model";
+import { Section } from "../models/section.model";
+import { InputSection } from "../types/section.type";
 
-class KuisionerController {
+class SectionController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private static kuisionerRepository: any = sequelize.getRepository(Kuisioner);
+  private static sectionRepository: any = sequelize.getRepository(Section);
 
 
   constructor() {
@@ -27,19 +27,17 @@ class KuisionerController {
     _next: NextFunction
   ){
     try {
-      const {id: userId} = _req.user;
-      const data = _req.body
-      const kuisioner = await KuisionerController.kuisionerRepository.create(
+      const data: InputSection = _req.body
+      console.log(data)
+      const section = await SectionController.sectionRepository.create(
         {
-          mahasiswaId: userId,
           ...data,
         }
       )
-      console.log(kuisioner)
       const response: BaseResponseProps<IKuisioner> = {
         code: 201,
         message: "OK",
-        payload: kuisioner,
+        payload: section,
       };
       _res.status(201).json(response);
     } catch (error) {
@@ -55,7 +53,7 @@ class KuisionerController {
     try {
       const {id: userId} = _req.user;
       const { where, meta } = metaMaker(_req);
-      const kuisioner = await KuisionerController.kuisionerRepository.findAll({
+      const kuisioner = await SectionController.sectionRepository.findAll({
         where: {
           mahasiswaId: userId,
           ...where
@@ -88,7 +86,7 @@ class KuisionerController {
     try {
       console.log(_req.params)
       const { id } = _req.params;
-      const kuisioner = await KuisionerController.kuisionerRepository.findByPk(id)
+      const kuisioner = await SectionController.sectionRepository.findByPk(id)
       new check(kuisioner,_req);
 
       const response: BaseResponseProps<IKuisioner> = {
@@ -112,7 +110,7 @@ class KuisionerController {
     try {
       const { id } = _req.params;
       const data: Partial<KuisionerInput> = _req.body;
-      const kuisioner = await KuisionerController.kuisionerRepository.findByPk(id)
+      const kuisioner = await SectionController.sectionRepository.findByPk(id)
       
       if(!kuisioner) 
         throw new BaseError(404, "Data Not Found")
@@ -120,7 +118,7 @@ class KuisionerController {
       if (kuisioner.mahasiswaId !== _req.user.id) 
         throw new BaseError(403, "Forbidden");
 
-      const newKuisioner = await KuisionerController.kuisionerRepository.update(
+      const newKuisioner = await SectionController.sectionRepository.update(
         data,
         { where: { id }, returning: true },
       );
@@ -145,7 +143,7 @@ class KuisionerController {
   ){
     try {
       const { id } = _req.params;
-      const kuisioner = await KuisionerController.kuisionerRepository.findByPk(id)
+      const kuisioner = await SectionController.sectionRepository.findByPk(id)
 
       if(!kuisioner) 
         throw new BaseError(404, "Data Not Found")
@@ -153,7 +151,7 @@ class KuisionerController {
       if (kuisioner.mahasiswaId !== _req.user.id) 
         throw new BaseError(403, "Forbidden");
 
-      await KuisionerController.kuisionerRepository.destroy({
+      await SectionController.sectionRepository.destroy({
         where: { id },
       });
 
@@ -175,5 +173,5 @@ class KuisionerController {
 
 }
 
-const kuisionerController = new KuisionerController();
-export default kuisionerController;
+const sectionController = new SectionController();
+export default sectionController;

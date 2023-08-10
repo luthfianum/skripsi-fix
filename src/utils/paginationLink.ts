@@ -1,4 +1,4 @@
-import { Meta } from "../types/base.type";
+import Meta from "../types/base.type";
 
 const createPaginationLinks = (url: string, limit?: number, offset?: number) => {
   const meta: Meta = {

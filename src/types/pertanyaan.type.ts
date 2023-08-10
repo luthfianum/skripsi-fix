@@ -1,9 +1,16 @@
+export enum TipePertanyaan {
+  ShortText = "ShortText",
+  Paragraph = "Paragraph",
+  Radio = "Radio",
+  Checkbox = "Checkbox",
+}
+
 export interface IPertanyaan {
   id: string;
   kuisionerId: string;
   pertanyaan: string;
-  tipe: string;
-  section: string;
+  tipe: TipePertanyaan;
+  section?: string;
   master: boolean;
   createdAt: string;
   updatedAt: string;

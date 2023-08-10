@@ -70,6 +70,13 @@ export class Kuisioner extends Model {
     instance.id = uuidv4().replace(/-/g, '');
   }
 
+  @BeforeCreate
+  static async initial(instance: Kuisioner): Promise<void> {
+    instance.penyebaran = 0;
+    instance.responden = 0;
+    instance.metode = EMetodeKuisioner.simple;
+  }
+
   public getOwner(): string {
     return this.mahasiswaId;
   }

@@ -70,9 +70,10 @@ export default class MailService {
             {
                 from: 'SurveyUp Admin <admin@surveyup.com>',
                 to: userEmail,
-                subject: 'Welcome to SurveyUp',
+                subject: '[Testing] Welcome to SurveyUp',
                 text: 'Welcome to SurveyUp',
-                html: '<b>Welcome to SurveyUp</b>',
+                html: `<b>Welcome to SurveyUp</b>
+                <p>Mohon maaf ini adalah email testing</p>`,
             }
         )
     }

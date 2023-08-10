@@ -1,47 +1,50 @@
 import {
-  Model,
   BeforeCreate,
   Column,
   CreatedAt,
   DataType,
   DeletedAt,
+  ForeignKey,
+  Model,
   Table,
   UpdatedAt,
-  ForeignKey,
-  BeforeUpdate,
 } from "sequelize-typescript";
+import { Mahasiswa } from "./mahasiswa.model";
 import { v4 as uuidv4 } from "uuid";
 import { Kuisioner } from "./kuisioner.model";
-import { TipePertanyaan } from "../types/pertanyaan.type";
+import { Pertanyaan } from "./pertanyaan.model";
 
 @Table({
-  tableName: "pertanyaan",
+  tableName: "jawaban",
   timestamps: true,
   freezeTableName: true,
-  modelName: "Pertanyaan",
+  modelName: "Jawaban",
 })
-export class Pertanyaan extends Model {
+export class Jawaban extends Model {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
   })
   id!: string;
 
+  // Penjawab kuisioner
+  @Column(DataType.STRING)
+  @ForeignKey(() => Mahasiswa)
+  mahasiswaId!: string;
+
   @Column(DataType.STRING)
   @ForeignKey(() => Kuisioner)
   kuisionerId!: string;
 
   @Column(DataType.STRING)
-  pertanyaan!: string;
+  @ForeignKey(() => Pertanyaan)
+  pertanyaanId!: string;
 
   @Column(DataType.STRING)
-  tipe!: TipePertanyaan;
+  jawaban!: string;
 
   @Column(DataType.STRING)
-  section!: string;
-
-  @Column(DataType.BOOLEAN)
-  master!: boolean;
+  penyebaranId!: string;
 
   @CreatedAt
   @Column
@@ -56,13 +59,7 @@ export class Pertanyaan extends Model {
   deletedAt!: Date;
 
   @BeforeCreate
-  static async generateId(instance: Pertanyaan): Promise<void> {
+  static async generateId(instance: Kuisioner): Promise<void> {
     instance.id = uuidv4().replace(/-/g, '');
-  }
-
-  @BeforeUpdate
-  @BeforeCreate
-  static async masterSync (instance: Pertanyaan): Promise<void> {
-    instance.master = !Boolean(instance.section || false)
   }
 }

@@ -2,14 +2,16 @@ import { NextFunction, Request, Response } from "express";
 
 import { BaseResponsePaginationProps, BaseResponseProps } from "../types/response.type";
 import sequelize from "../config/sequelize";
-import { Pertanyaan } from "../models/pertanyaan.model";
 import metaMaker from "../utils/pagination";
 import { IPertanyaan, InputPertanyaan } from "../types/pertanyaan.type";
-import { Option } from "../models/option.model";
+import BaseError from "../errors/BaseError";
+import { Section, Pertanyaan, Option } from "../models/index.model";
 
 class PertanyaanController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static pertanyaanRepository: any = sequelize.getRepository(Pertanyaan);
+  private static optionRepository: any = sequelize.getRepository(Option);
+  private static sectionRepository: any = sequelize.getRepository(Section);
 
   public async getListByKuisionerId(
     _req: Request,
@@ -85,7 +87,7 @@ class PertanyaanController {
 
       const response: BaseResponseProps<IPertanyaan> = {
         code: 201,
-        message: "CREATED",
+        message: "OK",
         payload: pertanyaan,
       };
 
@@ -108,8 +110,8 @@ class PertanyaanController {
       const updatedPertanyaan = await pertanyaan.update(data)
 
       const response: BaseResponseProps<IPertanyaan> = {
-        code: 201,
-        message: "CREATED",
+        code: 200,
+        message: "OK",
         payload: updatedPertanyaan,
       };
 
@@ -128,15 +130,106 @@ class PertanyaanController {
       const { id } = _req.params;
       const pertanyaan = await PertanyaanController.pertanyaanRepository.findByPk(id);
 
-      await pertanyaan.softDestroy()
+      await pertanyaan.destroy()
 
-      const response: BaseResponseProps<IPertanyaan> = {
-        code: 201,
-        message: "CREATED",
-        payload: pertanyaan,
+      const response: BaseResponseProps<any> = {
+        code: 200,
+        message: "OK",
+        payload: {
+          id: pertanyaan.id
+        },
       };
 
       _res.status(200).json(response)
+    } catch (error) {
+      _next(error)
+    }
+  }
+
+  public async createOption (
+    _req: Request,
+    _res: Response,
+    _next: NextFunction
+  ) {
+    try {
+      const { id, kuisionerId } = _req.params;
+      const data = _req.body
+
+      const pertanyaan = await PertanyaanController.pertanyaanRepository.findByPk(id)
+
+      if(!pertanyaan)
+        throw new BaseError(404, "Data Not Found")
+
+      if(!(pertanyaan.tipe !== 'radio' || pertanyaan.tipe !== 'checkbox'))
+        throw new BaseError(400, "Tipe Pertanyaan Tidak Sesuai")
+
+      const option = await PertanyaanController.optionRepository.create({
+        pertanyaanId: id,
+        ...data
+      })
+
+      const response: BaseResponseProps<any> = {
+        code: 201,
+        message: "OK",
+        payload: option,
+      };
+
+      _res.status(201).json(response);
+
+    } catch (error) {
+      _next(error)
+    }
+  }
+
+  public async deleteOption (
+    _req: Request,
+    _res: Response,
+    _next: NextFunction
+  ): Promise<void> {
+    try {
+      const { id, kuisionerId, pertanyaanId } = _req.params;
+
+      const pertanyaan = await PertanyaanController.pertanyaanRepository.findByPk(pertanyaanId)
+
+      if(!pertanyaan)
+        throw new BaseError(404, "Data Not Found Pertanyaan")
+
+      if(!(pertanyaan.tipe !== 'radio' || pertanyaan.tipe !== 'checkbox'))
+        throw new BaseError(400, "Tipe Pertanyaan Tidak Sesuai")
+
+      const option = await PertanyaanController.optionRepository.findByPk(id)
+
+      if(!option)
+        throw new BaseError(404, "Data Not Found")
+
+      const section = await PertanyaanController.sectionRepository.findOne({
+        where: {
+          optionId: id
+        }
+      })
+
+      if(section){
+        // delete all section
+        await PertanyaanController.pertanyaanRepository.destroy({
+          where: {
+            section: section.id
+          }
+        })
+        await section.destroy()
+      }
+
+      await option.destroy()
+
+      const response: BaseResponseProps<any> = {
+        code: 200,
+        message: "OK",
+        payload: {
+          id: option.id
+        },
+      };
+
+      _res.status(200).json(response);
+
     } catch (error) {
       _next(error)
     }

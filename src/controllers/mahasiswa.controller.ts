@@ -10,7 +10,7 @@ import metaMaker from "../utils/pagination";
 
 import check from "../utils/check";
 
-export class MahasiswaController {
+class MahasiswaController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static mahasiswaRepository: any = sequelize.getRepository(Mahasiswa);
 
@@ -54,13 +54,14 @@ export class MahasiswaController {
       const mahasiswa = await MahasiswaController.mahasiswaRepository.findByPk(
         id
       );
-      check(mahasiswa, _req);
+      new check(mahasiswa, _req);
 
       const response: BaseResponseProps<IMahasiswa> = {
         code: 200,
         message: "OK",
         payload: mahasiswa,
       };
+      
       _res.status(200).json(response);
     } catch (error) {
       _next(error);
@@ -99,7 +100,7 @@ export class MahasiswaController {
       const mahasiswa = await MahasiswaController.mahasiswaRepository.findByPk(
         id
       );
-      check(mahasiswa, _req, { isSelf: true, isFound: true });
+      new check(mahasiswa, _req, { isSelf: true, isFound: true });
 
       const newMahasiswa = await MahasiswaController.mahasiswaRepository.update(
         data,

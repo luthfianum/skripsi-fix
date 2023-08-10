@@ -9,18 +9,6 @@ import BaseError from "../errors/BaseError";
 import MailService from "../config/nodemailer";
 
 class AuthController {
-  getMahasiswa(arg0: string, isAuthenticated: (_req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, _res: Response<any, Record<string, any>>, _next: NextFunction) => void, getMahasiswa: any) {
-    throw new Error("Method not implemented.");
-  }
-  getMahasiswaById(arg0: string, isAuthenticated: (_req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, _res: Response<any, Record<string, any>>, _next: NextFunction) => void, getMahasiswaById: any) {
-    throw new Error("Method not implemented.");
-  }
-  createMahasiswa(arg0: string, isAuthenticated: (_req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, _res: Response<any, Record<string, any>>, _next: NextFunction) => void, createMahasiswa: any) {
-    throw new Error("Method not implemented.");
-  }
-  updateMahasiswa(arg0: string, isAuthenticated: (_req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, _res: Response<any, Record<string, any>>, _next: NextFunction) => void, updateMahasiswa: any) {
-    throw new Error("Method not implemented.");
-  }
   private static mahasiswaRepository = sequelize.getRepository(Mahasiswa);
 
   constructor() {
@@ -34,10 +22,10 @@ class AuthController {
     _next: NextFunction
   ): Promise<void> {
     try {
-      const { nim, password } = _req.body;
+      const { email, password } = _req.body;
       const mahasiswa = await AuthController.mahasiswaRepository.findOne({
         where: {
-          nim,
+          email,
         }
       });
 
@@ -71,6 +59,8 @@ class AuthController {
     const transaction = await sequelize.transaction()
     try {
       const data = _req.body;
+      if (data.nim.length !== 9) 
+        throw new BaseError(400, "Input Tidak Valid");
       const mahasiswa = await AuthController.mahasiswaRepository.create(data, { transaction });
 
       await MailService.getInstance().sendWelcomeEmail(mahasiswa.email)
