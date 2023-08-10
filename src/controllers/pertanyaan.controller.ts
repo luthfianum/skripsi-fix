@@ -152,7 +152,7 @@ class PertanyaanController {
     _next: NextFunction
   ) {
     try {
-      const { id, kuisionerId } = _req.params;
+      const { id } = _req.params;
       const data = _req.body
 
       const pertanyaan = await PertanyaanController.pertanyaanRepository.findByPk(id)
@@ -187,7 +187,7 @@ class PertanyaanController {
     _next: NextFunction
   ): Promise<void> {
     try {
-      const { id, kuisionerId, pertanyaanId } = _req.params;
+      const { id, pertanyaanId } = _req.params;
 
       const pertanyaan = await PertanyaanController.pertanyaanRepository.findByPk(pertanyaanId)
 

@@ -7,7 +7,6 @@ import { BaseResponsePaginationProps, BaseResponseProps } from "../types/respons
 import metaMaker from "../utils/pagination";
 import check from "../utils/check";
 import BaseError from "../errors/BaseError";
-import { Option } from "../models/option.model";
 
 class KuisionerController {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

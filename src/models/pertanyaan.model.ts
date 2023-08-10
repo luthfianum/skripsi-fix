@@ -63,6 +63,6 @@ export class Pertanyaan extends Model {
   @BeforeUpdate
   @BeforeCreate
   static async masterSync (instance: Pertanyaan): Promise<void> {
-    instance.master = !Boolean(instance.section || false)
+    instance.master = !Boolean(instance.section)
   }
 }
